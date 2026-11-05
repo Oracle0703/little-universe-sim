@@ -1,6 +1,6 @@
 # 当前架构与模拟规则
 
-Vite + TypeScript + React。模拟不读取 React、DOM、网络、系统时钟或 Math.random。公开转换先 structuredClone；相同配置与操作序列得到相同结果，不修改输入。
+Vite + TypeScript + React。模拟不读取 React、DOM、网络、系统时钟或 Math.random；每日变化来自 variation.seed 的稳定哈希。公开转换先 structuredClone；相同配置（含种子）与操作序列得到相同结果，不修改输入。
 
 ## 模块与数据流
 
@@ -21,15 +21,17 @@ JSON → validateData → createWorld → advanceWorld → session → context �
 
 ## 每分钟 tick
 
-1. 时间前进；衰减关系、清过期传闻/约定。
+1. 时间前进；衰减关系（降到 initialValue × decayFloorRatio 为止）、清过期传闻/约定。
 2. 更新三需求，处理纸条到期，走完已有路段后再决策。
-3. 比较作息、精力、社交、偏好；当前行动/地点有 continuationBonus。聊天只选有醒着伙伴的位置，偏好聊天无人时回家休息。
+3. 比较作息、精力、社交、偏好；当前行动/地点有 continuationBonus，非作息活动遇满座减 crowdedResourcePenalty。聊天只选有醒着伙伴的位置，偏好聊天无人时回家休息。下一段作息前，路程 + 一半活动时长放不下的差事被剔除（目标地就是当前地点或下一段作息地点除外），全部剔除时就近休息。
 4. 自愿切换等实际 activityMinutes 达到配置时长；移动/等位不积累。纸条、紧急补觉、作息切换、伙伴离开、排队超时允许重选。同活动仅动机改变时不重置进度。
 5. 资源现有占用者优先，其余按到达时间、稳定 id 排队；拿到资源才执行。完成有限活动释放资源，继续同一活动不重复写“决定”。
-6. 睡眠/休息/吃饭恢复精力；休息和休闲恢复心情；实际偏好行动额外恢复心情，覆盖聊天与休息偏好；有伴聊天增加社交。独处的纸条聊天无收益。
+6. 睡眠/休息/吃饭恢复精力；休息和休闲恢复心情；实际偏好行动额外恢复心情，覆盖聊天与休息偏好；三者合计乘以（1 − 心情/100）。有伴聊天增加社交。独处的纸条聊天无收益。
 7. 地点间隔与配对冷却控制互动，更新关系/约定；实际夸稿、夜间相遇可生成传闻，再沿关系边传播。
 
-behavior / activityMinutes 已入 simulation.json 和热改面板：恢复速率、持续评分、活动时长、排队/偶遇冷却。76/120/160 等部分评分、需求衰减仍是代码常量，未全量参数化。默认四天测试不代表任意极端内容都平衡。
+behavior / activityMinutes 已入 simulation.json 和热改面板：恢复速率、持续评分、满座扣分、活动时长、排队/偶遇冷却。76/120/160 等部分评分、需求衰减、写生/散步/逛店的 0.14 心情收益仍是代码常量，未全量参数化。默认四天测试不代表任意极端内容都平衡。
+
+**每日变化（variation）：** dayShift(seed, 居民, 天) 用稳定哈希给每人每天一个 [−scheduleJitterMinutes, +scheduleJitterMinutes] 的整体偏移，作用于该天开始的全部作息段（跨午夜段归属开始那天）。第 1 天偏移为 0；第 2 天 00:00 起的段若提前，可能落在第 1 天深夜。重叠仍按 JSON 顺序，同一段取较早的开始日。
 
 目标事件携带 decision.action/source，按行动/地点去重；到站后用 startTravel 接续纸条改道，不再重复 setGoal。encounterTopic 标记 praise/night，选样不再搜索中文文案。电话标签与内置 Demo ID 依赖尚未迁移。
 
@@ -57,7 +59,7 @@ behavior / activityMinutes 已入 simulation.json 和热改面板：恢复速率
 | 传闻                         | 已听闻不撤回/重复收益，新参数控制后续转述                |
 | 日志                         | 追加本页策划 meta，仍有界 240 条                         |
 
-失败不发布新世界/配置。note/jump/tick 预期错误转为可见反馈；意外渲染错误交 ErrorBoundary。配置导出仅四份定义；旧合包需补 behavior/activityMinutes。拓扑 ID/数量不得在热改中增删。
+失败不发布新世界/配置。note/jump/tick 预期错误转为可见反馈；意外渲染错误交 ErrorBoundary。配置导出仅四份定义；旧合包粘贴导入时，缺少的规则组/字段由 withRuleDefaults 按内置默认补齐。拓扑 ID/数量不得在热改中增删。
 
 ## 长跑与回放 schema
 
@@ -65,7 +67,7 @@ behavior / activityMinutes 已入 simulation.json 和热改面板：恢复速率
 
 每分钟 advanceWorld(...,1)，用 nextEventId 抽取增量并核对 totalEvents，避免日志窗口裁剪漏记录。每 30 分钟加起终点快照，1800 分钟共 61 份。只存最近一局，半局不发布。
 
-当前 schemaVersion **1**，engineVersion **little-universe-w4.2**；语义变更升级引擎版本，改 JSON 内容无需升级。
+当前 schemaVersion **1**，engineVersion **little-universe-w4.3**；语义变更升级引擎版本，改 JSON 内容无需升级。
 
 | 顶层字段                              | 含义                                                                                                 |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------- |

@@ -100,8 +100,8 @@ describe("持续生活的行为回归", () => {
           ).toBeGreaterThanOrEqual(8);
         }
         expect(s.repeated, `${id} 连续重复决定`).toBe(0);
-        // A completed errand followed by sleep can legitimately return home; forbid sustained shuttling.
-        expect(s.returns, `${id} 40 分钟内折返`).toBeLessThanOrEqual(4);
+        // At most one A→B→A return within 40 minutes in four days; a daily pattern would show 4.
+        expect(s.returns, `${id} 40 分钟内折返`).toBeLessThanOrEqual(1);
       }
     },
   );
@@ -194,6 +194,7 @@ describe("持续生活的行为回归", () => {
       message: "试走",
     });
     session = sessionReducer(session, { type: "tick", minutes: 12 });
+    const control = sessionReducer(session, { type: "tick", minutes: 1 });
     const hot = structuredClone(data);
     hot.rules.behavior.favoriteMoodPerMinute = 1;
     hot.rules.activityMinutes.shop = 30;
@@ -204,7 +205,11 @@ describe("持续生活的行为回归", () => {
     );
     const beforeMood = session.world.agents[0].needs.mood;
     session = sessionReducer(session, { type: "tick", minutes: 1 });
-    expect(session.world.agents[0].needs.mood - beforeMood).toBeGreaterThan(1);
+    // Gains taper toward 100, so compare the same minute under the old rate.
+    const hotGain = session.world.agents[0].needs.mood - beforeMood;
+    const controlGain = control.world.agents[0].needs.mood - beforeMood;
+    expect(controlGain).toBeGreaterThan(0);
+    expect(hotGain).toBeGreaterThan(controlGain * 1.5);
     session = sessionReducer(session, { type: "tick", minutes: 47 });
     expect(session.world.agents[0].note).toBeNull();
     expect(session.world.notesRemaining).toBe(0);

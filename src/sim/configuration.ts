@@ -1,4 +1,4 @@
-import { validateData } from "./data";
+import { data as bundled, validateData } from "./data";
 import { initialRelation } from "./social";
 import type { WorldData, WorldState } from "./types";
 
@@ -18,10 +18,28 @@ const equal = (a: unknown, b: unknown) =>
   JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
 const pairKey = (a: string, b: string) => [a, b].sort().join(":");
 
+/** Older exports predate newer rule groups; fill only the missing rule keys with bundled defaults. */
+export function withRuleDefaults(value: unknown): unknown {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return value;
+  const root = value as Record<string, unknown>;
+  const rules = root.rules;
+  if (!rules || typeof rules !== "object" || Array.isArray(rules)) return value;
+  const merged: Record<string, unknown> = {
+    ...(rules as Record<string, unknown>),
+  };
+  for (const [group, defaults] of Object.entries(bundled.rules)) {
+    const current = merged[group];
+    if (current === undefined) merged[group] = structuredClone(defaults);
+    else if (current && typeof current === "object" && !Array.isArray(current))
+      merged[group] = { ...defaults, ...current };
+  }
+  return { ...root, rules: merged };
+}
+
 export function parseConfiguration(json: string): WorldData {
   let value: unknown;
   try {
-    value = JSON.parse(json);
+    value = withRuleDefaults(JSON.parse(json));
   } catch {
     throw new Error("JSON 格式错误，请检查引号、逗号和括号。");
   }
@@ -110,6 +128,7 @@ export function describeChanges(
   for (const group of [
     "behavior",
     "activityMinutes",
+    "variation",
     "relationships",
     "plans",
     "rumors",

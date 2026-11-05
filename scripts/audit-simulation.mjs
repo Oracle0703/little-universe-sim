@@ -16,6 +16,8 @@ try {
       a.id,
       {
         name: a.name,
+        moodSum: 0,
+        highMoodMinutes: 0,
         zeroMoodMinutes: 0,
         longestZeroMood: 0,
         zeroStreak: 0,
@@ -30,6 +32,8 @@ try {
     ]),
   );
   let reviewEvents = [];
+  const days = {};
+  const dayOf = (time) => Math.floor(time / 1440) + 1;
   for (let minute = 1; minute <= 5760; minute++) {
     const previous = world;
     world = tick(world, data);
@@ -38,6 +42,8 @@ try {
     for (const a of world.agents) {
       const s = stats[a.id],
         before = previous.agents.find((b) => b.id === a.id);
+      s.moodSum += a.needs.mood;
+      if (a.needs.mood > 95) s.highMoodMinutes++;
       if (a.needs.mood < 1) {
         s.zeroMoodMinutes++;
         s.zeroStreak++;
@@ -53,6 +59,19 @@ try {
         (a.goal === null || a.activityMinutes <= before.activityMinutes)
       )
         s.completedShopVisits++;
+    }
+    for (const e of emitted)
+      if (["encounter", "conflict", "rumor"].includes(e.kind))
+        (days[dayOf(e.time)] ??= { stories: new Set() }).stories.add(
+          `${e.time % 1440}|${e.kind}|${e.actors.join(",")}|${e.place}`,
+        );
+    if (world.time % 1440 === 0) {
+      const day = (days[dayOf(world.time - 1)] ??= { stories: new Set() });
+      day.relationAverage = +(
+        world.relations.reduce((sum, r) => sum + r.value, 0) /
+        world.relations.length
+      ).toFixed(1);
+      day.relationsAtRumorThreshold = `${world.relations.filter((r) => r.value >= data.rules.rumors.minRelation).length}/${world.relations.length}`;
     }
     for (const e of emitted) {
       if (e.actors.length !== 1) continue;
@@ -79,9 +98,26 @@ try {
     minutes: 5760,
     agents: Object.fromEntries(
       Object.entries(stats).map(
-        ([id, { arrivals, lastGoal, zeroStreak, ...s }]) => [id, s],
+        ([id, { arrivals, lastGoal, zeroStreak, moodSum, ...s }]) => [
+          id,
+          { averageMood: Math.round(moodSum / 5760), ...s },
+        ],
       ),
     ),
+    // Story events identical to the previous day at the same minute, actors and place.
+    days: Object.entries(days).map(([day, { stories, ...d }]) => {
+      const previous = days[Number(day) - 1]?.stories;
+      const same = previous
+        ? [...stories].filter((key) => previous.has(key)).length
+        : null;
+      return {
+        day: Number(day),
+        storyEvents: stories.size,
+        sameAsPreviousDay:
+          same === null ? null : `${Math.round((100 * same) / stories.size)}%`,
+        ...d,
+      };
+    }),
     review: {
       events: reviewEvents.length + 1,
       conflict: reviewEvents.filter((e) => e.kind === "conflict").length,

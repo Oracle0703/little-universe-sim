@@ -6,7 +6,7 @@ import type {
 } from "../sim/types";
 
 export const REVIEW_VERSION = 1;
-export const REVIEW_ENGINE = "little-universe-w4.2";
+export const REVIEW_ENGINE = "little-universe-w4.3";
 export const REVIEW_MINUTES = 1800;
 export const SNAPSHOT_INTERVAL = 30;
 export const RECORDING_SLICE = 15;

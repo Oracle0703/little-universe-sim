@@ -152,6 +152,7 @@ export function validateShape(input: unknown): asserts input is WorldData {
   const rules = object(root.rules, "rules", [
     "behavior",
     "activityMinutes",
+    "variation",
     "relationships",
     "plans",
     "rumors",
@@ -162,6 +163,7 @@ export function validateShape(input: unknown): asserts input is WorldData {
       "restMoodPerMinute",
       "chatSocialPerMinute",
       "continuationBonus",
+      "crowdedResourcePenalty",
       "maxQueueMinutes",
       "encounterIntervalMinutes",
       "pairCooldownMinutes",
@@ -176,11 +178,13 @@ export function validateShape(input: unknown): asserts input is WorldData {
       "shop",
       "rest",
     ],
+    variation: ["seed", "scheduleJitterMinutes"],
     relationships: [
       "decayPerHour",
       "graceMinutes",
       "closeThreshold",
       "closeMultiplier",
+      "decayFloorRatio",
     ],
     plans: [
       "durationMinutes",

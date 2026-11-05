@@ -279,32 +279,34 @@ describe("W2 关系、冲突与传闻", () => {
     expect(world.events.some((e) => e.conflict?.type === "resource")).toBe(
       true,
     );
-    world = advanceTo(world, data, 836);
+    world = advanceTo(world, data, 824);
     expect(
       world.jointPlans.some(
         (p) =>
-          p.participants.includes("ake") && p.participants.includes("tang"),
+          p.participants.includes("ake") && p.participants.includes("miao"),
       ),
     ).toBe(true);
     expect(
       world.events.some((e) => e.rumor?.path.join(":") === "lin:tang"),
     ).toBe(true);
-    world = giveNote(world, data, "tang", "shop", "store");
+    world = giveNote(world, data, "ake", "shop", "store");
     expect(
       world.events.some(
         (e) =>
           e.conflict?.type === "interruption" &&
-          e.conflict.initiator === "tang",
+          e.conflict.initiator === "ake" &&
+          e.conflict.others.includes("miao"),
       ),
     ).toBe(true);
     world = advanceWorld(world, data, 60);
-    expect(world.agents.find((a) => a.id === "tang")!.note).toBeNull();
+    expect(world.agents.find((a) => a.id === "ake")!.note).toBeNull();
     expect(
       world.events.some((e) => e.rumor?.path.join(":") === "lin:miao:zhou"),
     ).toBe(true);
     world = advanceTo(world, data, 1404);
     expect(pair(world, "amin", "qiao").value).toBeLessThan(78);
-    expect(pair(world, "zhou", "miao").value).toBeGreaterThan(75);
+    // The interrupted plan cost a point, yet the day's encounters still warm this pair.
+    expect(pair(world, "ake", "miao").value).toBeGreaterThan(66);
     expect(
       world.events.some(
         (e) =>

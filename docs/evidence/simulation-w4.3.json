@@ -1,0 +1,142 @@
+{
+  "minutes": 5760,
+  "agents": {
+    "amin": {
+      "averageMood": 68,
+      "name": "阿敏",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1756,
+      "eatMinutes": 68,
+      "completedShopVisits": 72,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "zhou": {
+      "averageMood": 68,
+      "name": "小周",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1782,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "chen": {
+      "averageMood": 75,
+      "name": "老陈",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 2673,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "ake": {
+      "averageMood": 83,
+      "name": "阿可",
+      "highMoodMinutes": 1239,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1293,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "qiao": {
+      "averageMood": 75,
+      "name": "乔乔",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 2038,
+      "eatMinutes": 63,
+      "completedShopVisits": 4,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "lin": {
+      "averageMood": 81,
+      "name": "林叔",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1468,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "tang": {
+      "averageMood": 81,
+      "name": "小唐",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1672,
+      "eatMinutes": 63,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    },
+    "miao": {
+      "averageMood": 72,
+      "name": "苗苗",
+      "highMoodMinutes": 0,
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1782,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 0
+    }
+  },
+  "days": [
+    {
+      "day": 1,
+      "storyEvents": 78,
+      "sameAsPreviousDay": null,
+      "relationAverage": 52.5,
+      "relationsAtRumorThreshold": "21/23"
+    },
+    {
+      "day": 2,
+      "storyEvents": 119,
+      "sameAsPreviousDay": "1%",
+      "relationAverage": 46.7,
+      "relationsAtRumorThreshold": "24/28"
+    },
+    {
+      "day": 3,
+      "storyEvents": 111,
+      "sameAsPreviousDay": "5%",
+      "relationAverage": 41.7,
+      "relationsAtRumorThreshold": "15/28"
+    },
+    {
+      "day": 4,
+      "storyEvents": 126,
+      "sameAsPreviousDay": "7%",
+      "relationAverage": 39.9,
+      "relationsAtRumorThreshold": "11/28"
+    },
+    {
+      "day": 5,
+      "storyEvents": 36,
+      "sameAsPreviousDay": "11%"
+    }
+  ],
+  "review": {
+    "events": 373,
+    "conflict": 27,
+    "rumor": 16,
+    "day2ParkConflicts": 6
+  }
+}
