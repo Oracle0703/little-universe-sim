@@ -53,6 +53,7 @@ export function validateData(input: unknown): asserts input is WorldData {
   ] as const)
     bounded(key, behavior[key], 0, 5);
   bounded("continuationBonus", behavior.continuationBonus, 0, 30);
+  bounded("crowdedResourcePenalty", behavior.crowdedResourcePenalty, 0, 100);
   for (const key of [
     "maxQueueMinutes",
     "encounterIntervalMinutes",
@@ -65,6 +66,15 @@ export function validateData(input: unknown): asserts input is WorldData {
   bounded("graceMinutes", rel.graceMinutes, 0, 1440, true);
   bounded("closeThreshold", rel.closeThreshold, 0, 100);
   bounded("closeMultiplier", rel.closeMultiplier, 0, 1);
+  bounded("decayFloorRatio", rel.decayFloorRatio, 0, 1);
+  bounded("seed", input.rules.variation.seed, 0, 2147483647, true);
+  bounded(
+    "scheduleJitterMinutes",
+    input.rules.variation.scheduleJitterMinutes,
+    0,
+    60,
+    true,
+  );
   bounded("durationMinutes", plans.durationMinutes, 1, 60, true);
   for (const name of [
     "queueMoodPenalty",

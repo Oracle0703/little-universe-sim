@@ -1,9 +1,10 @@
 {
   "behavior": {
-    "favoriteMoodPerMinute": 0.3,
+    "favoriteMoodPerMinute": 0.4,
     "restMoodPerMinute": 0.14,
     "chatSocialPerMinute": 0.6,
     "continuationBonus": 8,
+    "crowdedResourcePenalty": 20,
     "maxQueueMinutes": 45,
     "encounterIntervalMinutes": 6,
     "pairCooldownMinutes": 45
@@ -18,11 +19,16 @@
     "shop": 15,
     "rest": 25
   },
+  "variation": {
+    "seed": 20261105,
+    "scheduleJitterMinutes": 20
+  },
   "relationships": {
     "decayPerHour": 0.6,
     "graceMinutes": 60,
     "closeThreshold": 70,
-    "closeMultiplier": 0.5
+    "closeMultiplier": 0.5,
+    "decayFloorRatio": 0.6
   },
   "plans": {
     "durationMinutes": 8,

@@ -71,8 +71,11 @@ export function advanceSocialTime(world: WorldState, data: WorldData) {
     const rate =
       (rules.decayPerHour / 60) *
       (relation.value >= rules.closeThreshold ? rules.closeMultiplier : 1);
+    // Long silence loosens a tie toward a floor; it does not erase it.
+    const floor = relation.initialValue * rules.decayFloorRatio;
     const before = relation.value;
-    relation.value = clamp(before - rate);
+    if (before <= floor) continue;
+    relation.value = Math.max(floor, clamp(before - rate));
     relation.decayTotal += before - relation.value;
   }
   world.rumors = world.rumors.filter((r) => world.time < r.expiresAt);

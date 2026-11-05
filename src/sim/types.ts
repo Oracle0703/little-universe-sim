@@ -63,16 +63,22 @@ export interface SimulationRules {
     restMoodPerMinute: number;
     chatSocialPerMinute: number;
     continuationBonus: number;
+    crowdedResourcePenalty: number;
     maxQueueMinutes: number;
     encounterIntervalMinutes: number;
     pairCooldownMinutes: number;
   };
   activityMinutes: Record<Action, number>;
+  variation: {
+    seed: number;
+    scheduleJitterMinutes: number;
+  };
   relationships: {
     decayPerHour: number;
     graceMinutes: number;
     closeThreshold: number;
     closeMultiplier: number;
+    decayFloorRatio: number;
   };
   plans: {
     durationMinutes: number;

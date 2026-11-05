@@ -35,22 +35,74 @@ const parseTime = (time: string) => {
   return h * 60 + m;
 };
 
-function activeSchedule(def: AgentDefinition, time: number) {
-  const minute = minuteOfDay(time);
-  const index = def.schedule.findIndex((s) => {
-    const start = parseTime(s.start),
-      end = parseTime(s.end);
-    return start < end
-      ? minute >= start && minute < end
-      : minute >= start || minute < end;
+/** Stable hash in [0, 1): the same seed and key always give the same value, no Math.random. */
+function hash01(seed: number, key: string) {
+  let h = (2166136261 ^ seed) >>> 0;
+  for (let i = 0; i < key.length; i++)
+    h = Math.imul(h ^ key.charCodeAt(i), 16777619);
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x85ebca6b);
+  h ^= h >>> 13;
+  h = Math.imul(h, 0xc2b2ae35);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+
+/**
+ * A resident's whole day runs a little early or late. Day index 0 (D1) stays fixed so the
+ * guided demo and its checkpoints are stable; later days vary by seed.
+ */
+export function dayShift(data: WorldData, agentId: string, day: number) {
+  const { seed, scheduleJitterMinutes } = data.rules.variation;
+  if (day <= 0 || scheduleJitterMinutes === 0) return 0;
+  return Math.round(
+    (hash01(seed, `${agentId}:${day}`) * 2 - 1) * scheduleJitterMinutes,
+  );
+}
+
+/** Absolute [start, end) of every schedule block that starts on `day`, after that day's shift. */
+function blocksOn(def: AgentDefinition, data: WorldData, day: number) {
+  const shift = dayShift(data, def.id, day);
+  return def.schedule.map((schedule, index) => {
+    const start = parseTime(schedule.start),
+      end = parseTime(schedule.end);
+    return {
+      schedule,
+      index,
+      day,
+      start: day * 1440 + start + shift,
+      end: day * 1440 + end + (end <= start ? 1440 : 0) + shift,
+    };
   });
-  if (index < 0) return null;
-  const schedule = def.schedule[index];
-  const start = parseTime(schedule.start),
-    end = parseTime(schedule.end);
-  const startDay =
-    Math.floor(time / 1440) - (start > end && minute < end ? 1 : 0);
-  return { ...schedule, key: `${startDay}:${index}` };
+}
+
+function activeSchedule(def: AgentDefinition, data: WorldData, time: number) {
+  const today = Math.floor(time / 1440);
+  const blocks = [today - 1, today, today + 1].flatMap((day) =>
+    blocksOn(def, data, day),
+  );
+  // JSON order still wins overlaps; the earlier start day wins for the same entry.
+  const active = blocks
+    .filter((b) => b.start <= time && time < b.end)
+    .sort((a, b) => a.index - b.index || a.day - b.day)[0];
+  if (!active) return null;
+  return { ...active.schedule, key: `${active.day}:${active.index}` };
+}
+
+/** The next block that has not started yet, so autonomous errands can avoid running into it. */
+function upcomingSchedule(def: AgentDefinition, data: WorldData, time: number) {
+  const today = Math.floor(time / 1440);
+  return [today, today + 1]
+    .flatMap((day) => blocksOn(def, data, day))
+    .filter((b) => b.start > time)
+    .sort((a, b) => a.start - b.start)[0];
+}
+
+function travelMinutes(data: WorldData, from: string, to: string) {
+  if (from === to) return 0;
+  const a = data.places.find((p) => p.id === from)!;
+  const b = data.places.find((p) => p.id === to)!;
+  return 2 + Math.abs(a.x - b.x) * 2 + Math.abs(a.y - b.y) * 2;
 }
 
 function chatPartners(agent: AgentState, world: WorldState, place: string) {
@@ -78,7 +130,7 @@ export function chooseGoal(
       source: "note",
       reason: `收到你的纸条，临时改道至 ${formatTime(agent.note.expiresAt)}`,
     };
-  const schedule = activeSchedule(def, world.time);
+  const schedule = activeSchedule(def, data, world.time);
   const candidates: Goal[] = [];
   if (
     schedule &&
@@ -158,13 +210,58 @@ export function chooseGoal(
         ? "暂时没有醒着的聊天伙伴，先回家休息调整心情"
         : `心情 ${Math.round(agent.needs.mood)}，做点自己喜欢的事`,
   });
-  for (const candidate of candidates)
+  for (const candidate of candidates) {
     if (
       candidate.action === agent.goal?.action &&
       candidate.place === agent.goal.place
     )
       candidate.score += data.rules.behavior.continuationBonus;
-  return candidates.sort((a, b) => b.score - a.score)[0];
+    // Optional plans give way to a full seat instead of re-queuing behind people already waiting.
+    const resource = data.places.find(
+      (p) => p.id === candidate.place,
+    )!.resource;
+    if (
+      candidate.source !== "schedule" &&
+      resource?.actions.includes(candidate.action) &&
+      world.agents.filter(
+        (o) =>
+          o.id !== agent.id &&
+          !o.travel &&
+          o.place === candidate.place &&
+          o.goal &&
+          resource.actions.includes(o.goal.action),
+      ).length >= resource.capacity
+    )
+      candidate.score -= data.rules.behavior.crowdedResourcePenalty;
+  }
+  // Do not set off on an errand when not even half of it fits before the next schedule block.
+  const upcoming = upcomingSchedule(def, data, world.time);
+  const feasible = upcoming
+    ? candidates.filter(
+        (c) =>
+          c.source === "schedule" ||
+          c.score >= 150 ||
+          c.place === agent.place ||
+          c.place === upcoming.schedule.place ||
+          travelMinutes(data, agent.place, c.place) +
+            Math.ceil(data.rules.activityMinutes[c.action] / 2) <=
+            upcoming.start - world.time,
+      )
+    : candidates;
+  if (feasible.length < candidates.length) {
+    const here = data.places.find((p) => p.id === agent.place)!;
+    if (here.actions.includes("rest"))
+      feasible.push({
+        action: "rest",
+        place: here.id,
+        source: "need",
+        score: 10,
+        reason: `${formatTime(upcoming!.start)} 起要${ACTIONS[upcoming!.schedule.action]}，来不及出门，就近歇一会儿`,
+      });
+  }
+  return (feasible.length ? feasible : candidates).sort(
+    (a, b) => b.score - a.score,
+  )[0];
 }
 
 function log(world: WorldState, event: Omit<WorldEvent, "id" | "time">) {
@@ -251,13 +348,10 @@ function setGoal(
 /** Starting the remaining leg of a note's detour is not a second decision. */
 function startTravel(agent: AgentState, data: WorldData) {
   if (agent.goal && agent.place !== agent.goal.place && !agent.travel) {
-    const from = data.places.find((p) => p.id === agent.place)!;
-    const to = data.places.find((p) => p.id === agent.goal!.place)!;
-    const minutes =
-      2 + Math.abs(from.x - to.x) * 2 + Math.abs(from.y - to.y) * 2;
+    const minutes = travelMinutes(data, agent.place, agent.goal.place);
     agent.travel = {
-      from: from.id,
-      to: to.id,
+      from: agent.place,
+      to: agent.goal.place,
       remaining: minutes,
       total: minutes,
     };
@@ -495,7 +589,7 @@ function tickMutable(world: WorldState, data: WorldData) {
     const current = agent.goal;
     const scheduleChanged =
       current?.source === "schedule" &&
-      current.scheduleKey !== activeSchedule(def, world.time)?.key;
+      current.scheduleKey !== activeSchedule(def, data, world.time)?.key;
     const changed =
       !current ||
       current.action !== next.action ||
@@ -554,19 +648,18 @@ function tickMutable(world: WorldState, data: WorldData) {
     if (action === "rest")
       agent.needs.energy = clamp(agent.needs.energy + 0.35);
     if (action === "eat") agent.needs.energy = clamp(agent.needs.energy + 0.65);
-    if (["sketch", "walk", "shop"].includes(action))
-      agent.needs.mood = clamp(agent.needs.mood + 0.14);
-    if (action === "rest")
-      agent.needs.mood = clamp(
-        agent.needs.mood + data.rules.behavior.restMoodPerMinute,
-      );
+    // Activity mood gains taper toward 100: full effect when low, little when already content.
+    let moodGain = 0;
+    if (["sketch", "walk", "shop"].includes(action)) moodGain += 0.14;
+    if (action === "rest") moodGain += data.rules.behavior.restMoodPerMinute;
+    if (action === def.favorite.action)
+      moodGain += data.rules.behavior.favoriteMoodPerMinute;
+    agent.needs.mood = clamp(
+      agent.needs.mood + moodGain * (1 - agent.needs.mood / 100),
+    );
     if (action === "chat")
       agent.needs.social = clamp(
         agent.needs.social + data.rules.behavior.chatSocialPerMinute,
-      );
-    if (action === def.favorite.action)
-      agent.needs.mood = clamp(
-        agent.needs.mood + data.rules.behavior.favoriteMoodPerMinute,
       );
     if (
       agent.activityMinutes >= data.rules.activityMinutes[action] &&

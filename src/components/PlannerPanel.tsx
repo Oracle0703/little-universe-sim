@@ -11,6 +11,7 @@ const ruleLabels: Record<string, string> = {
   restMoodPerMinute: "休息每分钟心情收益",
   chatSocialPerMinute: "有伴聊天每分钟社交收益",
   continuationBonus: "当前活动继续评分加成",
+  crowdedResourcePenalty: "非作息活动遇满座的扣分",
   maxQueueMinutes: "排队多久允许重新考虑",
   encounterIntervalMinutes: "地点偶遇间隔分钟",
   pairCooldownMinutes: "同一对人偶遇冷却分钟",
@@ -21,6 +22,9 @@ const ruleLabels: Record<string, string> = {
   graceMinutes: "互动后宽限分钟",
   closeThreshold: "熟人分数门槛",
   closeMultiplier: "熟人衰减倍率",
+  decayFloorRatio: "疏远下限（占起点比例）",
+  seed: "随机种子（换种子换走向）",
+  scheduleJitterMinutes: "第 2 天起作息浮动分钟",
   durationMinutes: "共同安排分钟",
   queueMoodPenalty: "排队心情损失",
   interruptionMoodPenalty: "失约心情损失",
@@ -624,6 +628,7 @@ export function PlannerPanel({
                 ["relationships", "关系冷暖"],
                 ["behavior", "活动收益与保持目标"],
                 ["activityMinutes", "到达后活动时长（路途不计）"],
+                ["variation", "每日变化"],
                 ["plans", "共同安排"],
                 ["rumors", "传闻传播"],
               ] as const
@@ -639,6 +644,7 @@ export function PlannerPanel({
                       step={
                         key === "decayPerHour" ||
                         key === "closeMultiplier" ||
+                        key === "decayFloorRatio" ||
                         key.endsWith("PerMinute")
                           ? 0.1
                           : 1
