@@ -1,0 +1,242 @@
+[
+  {
+    "id": "amin",
+    "name": "阿敏",
+    "role": "程序",
+    "home": "home-a",
+    "initialPlace": "office",
+    "color": "#738aaf",
+    "tags": ["社恐", "夜猫子"],
+    "bio": "白天把话留给代码，深夜去便利店买一点安静。和乔乔聊起 bug 时，倒也没那么紧张。",
+    "needs": { "energy": 70, "social": 74, "mood": 68 },
+    "traits": { "sociability": 0.3, "praiseSensitivity": 0, "kindness": 0.7 },
+    "favorite": { "action": "shop", "place": "store" },
+    "schedule": [
+      {
+        "start": "02:00",
+        "end": "10:00",
+        "action": "sleep",
+        "place": "home-a"
+      },
+      { "start": "10:30", "end": "12:00", "action": "work", "place": "office" },
+      {
+        "start": "12:00",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "19:00", "action": "work", "place": "office" },
+      { "start": "23:00", "end": "00:30", "action": "shop", "place": "store" }
+    ]
+  },
+  {
+    "id": "zhou",
+    "name": "小周",
+    "role": "策划",
+    "home": "home-a",
+    "initialPlace": "office",
+    "color": "#c38a50",
+    "tags": ["话多", "短会爱好者"],
+    "bio": "「就聊五分钟。」喜欢把偶遇变成讨论，也会被阿敏礼貌地躲开。",
+    "needs": { "energy": 77, "social": 43, "mood": 78 },
+    "traits": { "sociability": 1, "praiseSensitivity": 0, "kindness": 0.65 },
+    "favorite": { "action": "chat", "place": "park" },
+    "schedule": [
+      {
+        "start": "23:00",
+        "end": "07:00",
+        "action": "sleep",
+        "place": "home-a"
+      },
+      { "start": "09:00", "end": "12:00", "action": "work", "place": "office" },
+      {
+        "start": "12:00",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "17:30", "action": "work", "place": "office" },
+      { "start": "18:00", "end": "19:00", "action": "chat", "place": "park" }
+    ]
+  },
+  {
+    "id": "chen",
+    "name": "老陈",
+    "role": "制作人",
+    "home": "home-b",
+    "initialPlace": "office",
+    "color": "#8c8475",
+    "tags": ["日程爆满", "电话不停"],
+    "bio": "连午饭都夹在两个会议之间。边吃边接电话，却记得每个人的交付日。",
+    "needs": { "energy": 49, "social": 65, "mood": 57 },
+    "traits": { "sociability": 0.65, "praiseSensitivity": 0, "kindness": 0.4 },
+    "favorite": { "action": "rest", "place": "park" },
+    "schedule": [
+      {
+        "start": "00:00",
+        "end": "06:00",
+        "action": "sleep",
+        "place": "home-b"
+      },
+      { "start": "08:00", "end": "11:50", "action": "work", "place": "office" },
+      {
+        "start": "11:50",
+        "end": "12:35",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "12:35", "end": "20:00", "action": "work", "place": "office" }
+    ]
+  },
+  {
+    "id": "ake",
+    "name": "阿可",
+    "role": "美术",
+    "home": "home-b",
+    "initialPlace": "office",
+    "color": "#bf7e78",
+    "tags": ["公园写生", "需要被肯定"],
+    "bio": "随身带着画本。有人认真夸一句，整个下午的颜色都会亮起来。",
+    "needs": { "energy": 73, "social": 56, "mood": 42 },
+    "traits": { "sociability": 0.6, "praiseSensitivity": 1, "kindness": 0.8 },
+    "favorite": { "action": "sketch", "place": "park" },
+    "schedule": [
+      {
+        "start": "00:00",
+        "end": "08:00",
+        "action": "sleep",
+        "place": "home-b"
+      },
+      { "start": "09:30", "end": "12:00", "action": "work", "place": "office" },
+      {
+        "start": "12:00",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "15:00", "action": "sketch", "place": "park" },
+      { "start": "15:00", "end": "18:00", "action": "work", "place": "office" }
+    ]
+  },
+  {
+    "id": "qiao",
+    "name": "乔乔",
+    "role": "测试",
+    "home": "home-a",
+    "initialPlace": "office",
+    "color": "#8c83ac",
+    "tags": ["细节控", "晚班搭子"],
+    "bio": "能找出最隐蔽的 bug，也能发现阿敏没说出口的疲惫。偶尔陪他去夜间便利店。",
+    "needs": { "energy": 81, "social": 67, "mood": 71 },
+    "traits": { "sociability": 0.5, "praiseSensitivity": 0, "kindness": 0.9 },
+    "favorite": { "action": "walk", "place": "park" },
+    "schedule": [
+      {
+        "start": "01:00",
+        "end": "09:00",
+        "action": "sleep",
+        "place": "home-a"
+      },
+      { "start": "10:00", "end": "12:05", "action": "work", "place": "office" },
+      {
+        "start": "12:05",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "19:30", "action": "work", "place": "office" },
+      { "start": "23:00", "end": "00:00", "action": "shop", "place": "store" }
+    ]
+  },
+  {
+    "id": "lin",
+    "name": "林叔",
+    "role": "行政",
+    "home": "home-b",
+    "initialPlace": "office",
+    "color": "#7e966d",
+    "tags": ["早起", "热心肠"],
+    "bio": "每天最早到。会给阿可的画留一句夸奖，也会提醒老陈先把饭吃完。",
+    "needs": { "energy": 60, "social": 62, "mood": 83 },
+    "traits": { "sociability": 0.8, "praiseSensitivity": 0, "kindness": 1 },
+    "favorite": { "action": "walk", "place": "park" },
+    "schedule": [
+      {
+        "start": "21:30",
+        "end": "05:30",
+        "action": "sleep",
+        "place": "home-b"
+      },
+      { "start": "06:00", "end": "07:00", "action": "walk", "place": "park" },
+      { "start": "08:00", "end": "11:50", "action": "work", "place": "office" },
+      {
+        "start": "11:50",
+        "end": "12:40",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "14:30", "action": "chat", "place": "park" },
+      { "start": "14:30", "end": "17:00", "action": "work", "place": "office" }
+    ]
+  },
+  {
+    "id": "tang",
+    "name": "小唐",
+    "role": "音频",
+    "home": "home-b",
+    "initialPlace": "office",
+    "color": "#669a9a",
+    "tags": ["慢热", "散步采样"],
+    "bio": "在公园收集声音。跟美术聊氛围，跟程序聊延迟，总能跨组找到共同话题。",
+    "needs": { "energy": 76, "social": 58, "mood": 65 },
+    "traits": { "sociability": 0.45, "praiseSensitivity": 0, "kindness": 0.8 },
+    "favorite": { "action": "walk", "place": "park" },
+    "schedule": [
+      {
+        "start": "01:00",
+        "end": "09:00",
+        "action": "sleep",
+        "place": "home-b"
+      },
+      { "start": "10:00", "end": "12:05", "action": "work", "place": "office" },
+      {
+        "start": "12:05",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "14:00", "action": "walk", "place": "park" },
+      { "start": "14:00", "end": "19:00", "action": "work", "place": "office" }
+    ]
+  },
+  {
+    "id": "miao",
+    "name": "苗苗",
+    "role": "运营",
+    "home": "home-a",
+    "initialPlace": "office",
+    "color": "#b49751",
+    "tags": ["社交雷达", "灵感收集者"],
+    "bio": "喜欢把不同组的人凑在一桌。小周的点子常常从她的反馈里再长出来。",
+    "needs": { "energy": 79, "social": 39, "mood": 79 },
+    "traits": { "sociability": 0.95, "praiseSensitivity": 0, "kindness": 0.9 },
+    "favorite": { "action": "chat", "place": "park" },
+    "schedule": [
+      {
+        "start": "23:30",
+        "end": "07:30",
+        "action": "sleep",
+        "place": "home-a"
+      },
+      { "start": "09:00", "end": "12:00", "action": "work", "place": "office" },
+      {
+        "start": "12:00",
+        "end": "13:00",
+        "action": "eat",
+        "place": "cafeteria"
+      },
+      { "start": "13:00", "end": "14:00", "action": "chat", "place": "park" },
+      { "start": "14:00", "end": "18:30", "action": "work", "place": "office" }
+    ]
+  }
+]

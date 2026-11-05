@@ -1,0 +1,66 @@
+[
+  {
+    "id": "home-a",
+    "name": "家A",
+    "subtitle": "早起的人与晚睡的人",
+    "type": "home",
+    "x": 0,
+    "y": 0,
+    "actions": ["sleep", "rest", "chat"]
+  },
+  {
+    "id": "office",
+    "name": "工位",
+    "subtitle": "灵感、截稿与临时短会",
+    "type": "office",
+    "x": 1,
+    "y": 0,
+    "actions": ["work", "chat", "rest"]
+  },
+  {
+    "id": "cafeteria",
+    "name": "食堂",
+    "subtitle": "总有人想拼一张桌",
+    "type": "food",
+    "x": 2,
+    "y": 0,
+    "actions": ["eat", "chat", "rest"],
+    "resource": {
+      "name": "共享餐位",
+      "capacity": 2,
+      "actions": ["eat", "chat"]
+    }
+  },
+  {
+    "id": "home-b",
+    "name": "家B",
+    "subtitle": "给生活留一点空白",
+    "type": "home",
+    "x": 0,
+    "y": 1,
+    "actions": ["sleep", "rest", "chat"]
+  },
+  {
+    "id": "park",
+    "name": "公园",
+    "subtitle": "两张长椅，无数个话题",
+    "type": "park",
+    "x": 1,
+    "y": 1,
+    "actions": ["sketch", "walk", "chat", "rest"],
+    "resource": {
+      "name": "长椅",
+      "capacity": 2,
+      "actions": ["sketch", "chat", "rest"]
+    }
+  },
+  {
+    "id": "store",
+    "name": "便利店",
+    "subtitle": "夜深了，也有一盏灯",
+    "type": "shop",
+    "x": 2,
+    "y": 1,
+    "actions": ["shop", "chat", "rest"]
+  }
+]

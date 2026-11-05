@@ -1,0 +1,46 @@
+{
+  "behavior": {
+    "favoriteMoodPerMinute": 0.3,
+    "restMoodPerMinute": 0.14,
+    "chatSocialPerMinute": 0.6,
+    "continuationBonus": 8,
+    "maxQueueMinutes": 45,
+    "encounterIntervalMinutes": 6,
+    "pairCooldownMinutes": 45
+  },
+  "activityMinutes": {
+    "sleep": 60,
+    "work": 45,
+    "eat": 18,
+    "chat": 20,
+    "sketch": 30,
+    "walk": 25,
+    "shop": 15,
+    "rest": 25
+  },
+  "relationships": {
+    "decayPerHour": 0.6,
+    "graceMinutes": 60,
+    "closeThreshold": 70,
+    "closeMultiplier": 0.5
+  },
+  "plans": {
+    "durationMinutes": 8,
+    "queueMoodPenalty": 3,
+    "interruptionMoodPenalty": 2,
+    "interruptionRelationPenalty": 1
+  },
+  "rumors": {
+    "maxHops": 2,
+    "minRelation": 35,
+    "hopDelayMinutes": 6,
+    "broadcastCooldownMinutes": 12,
+    "recipientCooldownMinutes": 45,
+    "sourceCooldownMinutes": 90,
+    "lifetimeMinutes": 240,
+    "maxActive": 6,
+    "maxRecipients": 3,
+    "moodBoost": 2,
+    "familiarityBoost": 1
+  }
+}

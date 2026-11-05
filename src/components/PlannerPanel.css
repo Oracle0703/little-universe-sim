@@ -1,0 +1,234 @@
+.planner-panel {
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 540px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf4;
+  border-left: 1px solid #cdd7c4;
+  box-shadow: -12px 0 48px #32422c24;
+  color: #40513a;
+}
+.planner-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 24px 12px;
+}
+.planner-heading > div > span {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #87977a;
+}
+.planner-heading h2 {
+  font-size: 21px;
+  font-weight: 500;
+  margin-top: 9px;
+}
+.planner-intro {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #8b957d;
+  padding: 0 24px 16px;
+}
+.planner-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 24px 12px;
+  border-bottom: 1px solid #e0e4d7;
+}
+.planner-tabs button {
+  flex: 1;
+  padding: 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  color: #8c9b7d;
+}
+.planner-tabs button.active {
+  background: #e7eedc;
+  color: #4a6a38;
+}
+.planner-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #c8d2ba transparent;
+}
+.planner-content label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  color: #70805f;
+}
+.planner-content input:not([type="checkbox"]),
+.planner-content select,
+.planner-content textarea {
+  min-width: 0;
+  width: 100%;
+  padding: 9px;
+  background: #fffef8;
+  color: #465b3b;
+  border: 1px solid #d8dfcb;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 12px;
+}
+.planner-content h3 {
+  font-size: 12px;
+  font-weight: 550;
+  margin: 17px 0 11px;
+}
+.planner-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 12px;
+}
+.planner-fields.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 9px;
+}
+.planner-help {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #8c987e;
+  margin: 3px 0 14px;
+}
+.schedule-editor,
+.action-checks {
+  border: 1px solid #e0e5d5;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 0 0 14px;
+  min-width: 0;
+}
+.schedule-editor legend,
+.action-checks legend {
+  padding: 0 5px;
+  font-size: 10px;
+  color: #8c9a7a;
+}
+.action-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.action-checks label {
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+}
+.action-checks input {
+  accent-color: #56754a;
+}
+.planner-secondary {
+  border: 1px solid #cfd9c2;
+  padding: 9px 11px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #647d51;
+}
+.planner-text-button {
+  font-size: 10px;
+  color: #899779;
+  padding: 4px 0;
+}
+.planner-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 13px;
+}
+.planner-json {
+  border-top: 1px solid #dde4d1;
+  margin-top: 22px;
+  padding-top: 16px;
+  font-size: 11px;
+}
+.planner-json summary {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.planner-json textarea {
+  font-family: Consolas, monospace;
+  resize: vertical;
+  font-size: 10px;
+}
+.planner-bottom {
+  border-top: 1px solid #dce3d1;
+  background: #f1f4e9;
+  padding: 12px 24px 18px;
+}
+.planner-message {
+  font-size: 11px;
+  line-height: 1.7;
+  margin-bottom: 10px;
+  color: #76856a;
+}
+.planner-message.error {
+  color: #a35546;
+}
+.planner-message.success {
+  color: #4e7543;
+}
+.planner-bottom small {
+  display: block;
+  margin-top: 9px;
+  text-align: center;
+  color: #95a085;
+  font-size: 9px;
+}
+.planner-entry {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #d9dfce;
+  border-radius: 6px;
+  color: #6d805d;
+  font-size: 11px;
+}
+.demo-planner-entry {
+  margin-top: 12px;
+  font-size: 10px;
+  color: #6d8558;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.event-configuration .event-marker,
+.event-configuration .event-meta > span {
+  color: #5e897b;
+  background: #e3efea;
+}
+@media (max-width: 700px) {
+  .planner-heading {
+    padding-top: 17px;
+  }
+  .planner-entry {
+    font-size: 9px;
+    padding: 8px;
+  }
+  .header-right {
+    gap: 8px;
+  }
+  .planner-content {
+    padding: 16px;
+  }
+  .planner-bottom {
+    padding: 12px 16px;
+  }
+}

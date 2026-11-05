@@ -1,0 +1,91 @@
+{
+  "minutes": 5760,
+  "agents": {
+    "amin": {
+      "name": "阿敏",
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1736,
+      "eatMinutes": 68,
+      "completedShopVisits": 59,
+      "returnsWithin40Minutes": 45,
+      "repeatedGoals": 57
+    },
+    "zhou": {
+      "name": "小周",
+      "zeroMoodMinutes": 4215,
+      "longestZeroMood": 996,
+      "workMinutes": 285,
+      "eatMinutes": 17,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 100
+    },
+    "chen": {
+      "name": "老陈",
+      "zeroMoodMinutes": 4131,
+      "longestZeroMood": 820,
+      "workMinutes": 450,
+      "eatMinutes": 17,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 0,
+      "repeatedGoals": 105
+    },
+    "ake": {
+      "name": "阿可",
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1279,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 17,
+      "repeatedGoals": 23
+    },
+    "qiao": {
+      "name": "乔乔",
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1996,
+      "eatMinutes": 63,
+      "completedShopVisits": 4,
+      "returnsWithin40Minutes": 42,
+      "repeatedGoals": 24
+    },
+    "lin": {
+      "name": "林叔",
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1465,
+      "eatMinutes": 68,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 70,
+      "repeatedGoals": 25
+    },
+    "tang": {
+      "name": "小唐",
+      "zeroMoodMinutes": 0,
+      "longestZeroMood": 0,
+      "workMinutes": 1630,
+      "eatMinutes": 63,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 99,
+      "repeatedGoals": 24
+    },
+    "miao": {
+      "name": "苗苗",
+      "zeroMoodMinutes": 4322,
+      "longestZeroMood": 3896,
+      "workMinutes": 283,
+      "eatMinutes": 17,
+      "completedShopVisits": 0,
+      "returnsWithin40Minutes": 1,
+      "repeatedGoals": 97
+    }
+  },
+  "review": {
+    "events": 880,
+    "conflict": 101,
+    "rumor": 20,
+    "day2ParkConflicts": 62
+  }
+}

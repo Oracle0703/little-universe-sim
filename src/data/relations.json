@@ -1,0 +1,14 @@
+[
+  { "a": "amin", "b": "zhou", "label": "短会拉扯", "value": 28 },
+  { "a": "amin", "b": "qiao", "label": "晚班搭子", "value": 78 },
+  { "a": "amin", "b": "tang", "label": "技术默契", "value": 60 },
+  { "a": "zhou", "b": "chen", "label": "提案与追问", "value": 56 },
+  { "a": "zhou", "b": "miao", "label": "点子接力", "value": 75 },
+  { "a": "chen", "b": "lin", "label": "老同事", "value": 72 },
+  { "a": "chen", "b": "qiao", "label": "版本守门人", "value": 61 },
+  { "a": "ake", "b": "lin", "label": "第一位观众", "value": 74 },
+  { "a": "ake", "b": "tang", "label": "氛围搭档", "value": 70 },
+  { "a": "ake", "b": "miao", "label": "作品推荐官", "value": 66 },
+  { "a": "qiao", "b": "miao", "label": "玩家反馈搭档", "value": 58 },
+  { "a": "lin", "b": "tang", "label": "公园熟面孔", "value": 64 }
+]
